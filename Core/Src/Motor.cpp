@@ -37,14 +37,7 @@ void M3508_Motor::canRxMsgCallback(uint8_t rx_data[8])
     this->delta_angle_=this->delta_ecd_angle_/this->ratio_;
     this->angle_+=this->delta_angle_;
 }
-std::vector<float> M3508_Motor::Get_motor_message()
+std::array<float, 6> M3508_Motor::Get_motor_message() const
 {
-    std::vector<float> motor_message;
-    motor_message.push_back(this->ratio_);
-    motor_message.push_back(this->delta_angle_);
-    motor_message.push_back(this->delta_ecd_angle_);
-    motor_message.push_back(this->rotate_speed_);
-    motor_message.push_back(this->current_);
-    motor_message.push_back(this->temp_);
-    return motor_message;
+    return {ratio_, delta_angle_, delta_ecd_angle_, rotate_speed_, current_, temp_};
 }

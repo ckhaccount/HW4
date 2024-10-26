@@ -36,9 +36,9 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 CAN_RxHeaderTypeDef RxHeader;
-CAN_TxHeaderTypeDef TxHeader={0x202,0,CAN_ID_STD,CAN_RTR_DATA, 8, DISABLE};
+CAN_TxHeaderTypeDef TxHeader={0x201,0,CAN_ID_STD,CAN_RTR_DATA, 8, DISABLE};
 uint8_t RxData[8];
-uint8_t TxData[8]={0x00,0x00,0x00,0x70,0x00,0x00,0x00,0x00};
+uint8_t TxData[8]={0x00,0x00,0x00,0x30,0x00,0x00,0x00,0x00};
 uint32_t TxMailbox=CAN_TX_MAILBOX0;
 /* USER CODE END PD */
 
@@ -104,7 +104,7 @@ int main(void)
     FilterConfig.FilterMaskIdHigh=0x0000,
     FilterConfig.FilterMaskIdLow=0x0000,
     FilterConfig.FilterFIFOAssignment=CAN_FILTER_FIFO0,
-    FilterConfig.FilterBank=0,
+    FilterConfig.FilterBank=14,
     FilterConfig.FilterMode=CAN_FILTERMODE_IDMASK,
     FilterConfig.FilterScale=CAN_FILTERSCALE_32BIT,
     FilterConfig.FilterActivation=CAN_FILTER_ENABLE,
@@ -119,8 +119,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    HAL_CAN_AddTxMessage(&hcan1,&TxHeader,TxData,&TxMailbox);
-    //HAL_GPIO_TogglePin(LED_R_GPIO_Port,LED_R_Pin);
+    if(HAL_CAN_AddTxMessage(&hcan1,&TxHeader,TxData,&TxMailbox)==HAL_OK)
+    {
+      HAL_GPIO_TogglePin(LED_R_GPIO_Port,LED_R_Pin);
+    }
     HAL_Delay(1000);
     /* USER CODE END WHILE */
 

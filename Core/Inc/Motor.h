@@ -1,13 +1,13 @@
 #ifndef MOTOR_H
 #define MOTOR_H
 
-#include <vector>
+#include <array>
 #include "main.h"
 class M3508_Motor{
 public:
     M3508_Motor();
     void canRxMsgCallback(uint8_t rx_data[8]);
-    std:: vector<float> Get_motor_message();
+    [[nodiscard]] std::array<float, 6> Get_motor_message() const;
     float linearMapping(int in, int in_min, int in_max, float out_min, float out_max);
 private:
     float ratio_; // 电机减速比
